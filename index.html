@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinderela: Seu Destino</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #game-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 { color: #5a67d8; }
+
+        #text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5a67d8;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Cinderela</h1>
+    <div id="text">A história está começando...</div>
+    <div id="options" class="options-container"></div>
+</div>
+
+<script>
+    const textElement = document.getElementById('text');
+    const optionsElement = document.getElementById('options');
+
+    // Aqui definimos os "nós" da história
+    const storyNodes = {
+        start: {
+            text: "Cinderela está limpando a casa enquanto suas irmãs se preparam para o baile real. De repente, sua Fada Madrinha aparece! O que você faz?",
+            options: [
+                { text: "Pedir um vestido deslumbrante", next: 'vestido' },
+                { text: "Dizer que prefere ficar em casa descansando", next: 'descanso' }
+            ]
+        },
+        vestido: {
+            text: "Você está magnífica! Mas lembre-se: o feitiço acaba à meia-noite. No baile, o Príncipe te convida para dançar. Você aceita?",
+            options: [
+                { text: "Dançar a noite toda", next: 'meia_noite' },
+                { text: "Ir direto para o buffet de comida", next: 'comida' }
+            ]
+        },
+        descanso: {
+            text: "Cinderela tirou um cochilo maravilhoso e acordou renovada. No dia seguinte, ela usou sua energia para abrir seu próprio negócio de sapatos. Fim Feliz e Empreendedor!",
+            options: [
+                { text: "Recomeçar história", next: 'start' }
+            ]
+        },
+        meia_noite: {
+            text: "O relógio bate as 12 badaladas! Você corre e deixa um sapatinho para trás. O Príncipe vai à sua casa testar o sapato. Você...",
+            options: [
+                { text: "Esconde o outro par para fazer mistério", next: 'misterio' },
+                { text: "Mostra logo o par e casa com ele", next: 'casamento' }
+            ]
+        },
+        comida: {
+            text: "O Príncipe achou engraçado você preferir as coxinhas do que a dança e se apaixonou pela sua autenticidade. Vocês viraram críticos gastronômicos reais!",
+            options: [
+                { text: "Recomeçar história", next: 'start' }
+            ]
+        },
+        misterio: {
+            text: "O Príncipe achou você muito confusa e decidiu casar com o dono da sapataria que fabricou o modelo original. Você continua sendo a melhor faxineira do reino.",
+            options: [
+                { text: "Tentar novamente", next: 'start' }
+            ]
+        },
+        casamento: {
+            text: "O sapato serviu perfeitamente! Vocês se casaram e viveram felizes para sempre (e com muitos sapatos novos).",
+            options: [
+                { text: "Jogar de novo", next: 'start' }
+            ]
+        }
+    };
+
+    function showNode(nodeIndex) {
+        const node = storyNodes[nodeIndex];
+        textElement.innerText = node.text;
+
+        // Limpa os botões antigos
+        while (optionsElement.firstChild) {
+            optionsElement.removeChild(optionsElement.firstChild);
+        }
+
+        // Cria os novos botões
+        node.options.forEach(option => {
+            const button = document.createElement('button');
+            button.innerText = option.text;
+            button.onclick = () => showNode(option.next);
+            optionsElement.appendChild(button);
+        });
+    }
+
+    // Inicia o jogo
+    showNode('start');
+</script>
+
+</body>
+</html>
